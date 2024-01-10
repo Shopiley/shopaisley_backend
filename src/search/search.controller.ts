@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import express, { Request, Response } from 'express';
 import { Pool } from 'pg';
 
@@ -14,9 +15,8 @@ const dbConfig = {
 const pool = new Pool(dbConfig);
 
 const searchController = async (req: Request, res: Response) => {
-    const keyword: string = req.query.keyword as string;
-    const category: string = req.query.category as string; 
-
+  const keyword: string = req.query.keyword as string;
+  const category: string = req.query.category as string;
 
   if (!keyword) {
     return res
@@ -46,7 +46,7 @@ const searchController = async (req: Request, res: Response) => {
     console.error('Error executing query:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-});
+};
 
 const PORT = 3000;
 app.listen(PORT, () => {

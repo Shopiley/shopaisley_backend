@@ -1,8 +1,10 @@
+/* eslint-disable prettier/prettier */
 import { Auth } from 'src/auth/entities/auth.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
 
 @Entity()
 export class User {
+
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
