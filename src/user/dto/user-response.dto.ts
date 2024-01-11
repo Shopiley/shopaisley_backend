@@ -9,7 +9,7 @@ export class UserResponseDto {
     phoneNo: string;
     isActive: boolean;
     email: string;
-
+  
     constructor(user: User) {
       this.id = user.id;
       this.firstName = user.firstName;
