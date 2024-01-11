@@ -1,12 +1,13 @@
 import { User } from 'src/user/entities/user.entity';
 import {
-  //   Entity,
+    Entity,
   Column,
   PrimaryGeneratedColumn,
   OneToOne,
   JoinColumn,
 } from 'typeorm';
 
+@Entity()
 export class Auth {
   @PrimaryGeneratedColumn()
   id: number;

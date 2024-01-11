@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { User } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { Auth } from './auth/entities/auth.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
@@ -23,7 +24,7 @@ require('dotenv').config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      // entities: [User],
+      entities: [User,Auth],
       synchronize: true,
       ssl: {
         rejectUnauthorized: false,
