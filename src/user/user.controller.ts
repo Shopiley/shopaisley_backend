@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Version,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -32,12 +33,26 @@ export class UserController {
   }
 
   // @Version('1')
-  @ApiOperation({ summary: 'Get user by ID' })
+ /* @ApiOperation({ summary: 'Get user by ID' })
   @Get(':id')
   @ApiResponse({ status: 201, description: 'User successfully found' })
   @ApiResponse({ status: 404, description: 'User does not exist' })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: Number) {
     return this.userService.findOne(+id);
+    
+  }
+*/
+@Get(':id')
+  async findOne(@Param('id') id: string) {
+    try {
+      const user = await this.userService.findById(id);
+      return user; // You can return the user directly or create a DTO for a more structured response
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error; // Rethrow other errors
+    }
   }
 
   @Patch(':id')
