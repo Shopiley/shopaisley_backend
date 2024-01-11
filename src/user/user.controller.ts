@@ -18,10 +18,10 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Version('1')
+  // @Version('1')
   @Post('create')
   @ApiOperation({ summary: 'Create a new user' })
-  @ApiResponse({ status: 201, description: 'User successfully created' })
+  @ApiResponse({ status: 201, description: 'User successfully created' })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
@@ -31,7 +31,11 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  // @Version('1')
+  @ApiOperation({ summary: 'Get user by ID' })
   @Get(':id')
+  @ApiResponse({ status: 201, description: 'User successfully found' })
+  @ApiResponse({ status: 404, description: 'User does not exist' })
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
   }
