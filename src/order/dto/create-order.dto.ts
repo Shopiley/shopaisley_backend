@@ -1,18 +1,18 @@
-interface UserDTO {
-    userId: string;
-    name: string;
-  }
+// interface UserDTO {
+//     userId: string;
+//     name: string;
+//   }
   
-  interface OrderDTO {
-    orderId: string;
-    userId: string;
-    items: string[];
-  }
+//   interface OrderDTO {
+//     orderId: string;
+//     userId: string;
+//     items: string[];
+//   }
   
-  interface PaymentDTO {
-    orderId: string;
-    amount: number;
-  }
+//   interface PaymentDTO {
+//     orderId: string;
+//     amount: number;
+//   }
   
-  export { UserDTO, OrderDTO, PaymentDTO };
+//   export { UserDTO, OrderDTO, PaymentDTO };
   

@@ -1,22 +1,22 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+// import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
-export class Order {
-  @PrimaryGeneratedColumn()
-  orderId: number;
+// @Entity()
+// export class Order {
+//   @PrimaryGeneratedColumn()
+//   orderId: number;
 
-  @Column()
-  userId: string;
+//   @Column()
+//   userId: string;
 
-  @Column('jsonb', { nullable: true })
-  items: string[];
+//   @Column('jsonb', { nullable: true })
+//   items: string[];
 
-  // Add other properties as needed
+//   // Add other properties as needed
 
-  // Example timestamp columns
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+//   // Example timestamp columns
+//   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+//   createdAt: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
-}
+//   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+//   updatedAt: Date;
+// }

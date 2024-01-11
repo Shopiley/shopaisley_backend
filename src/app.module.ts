@@ -8,7 +8,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { User } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
-import { OrderModule } from './order/order.module';
+import { ProductCategory } from './product/entities/productcategory.entity';
+import { Product } from './product/entities/product.entity';
+import { Auth } from './auth/entities/auth.entity';
+// import { OrderModule } from './order/order.module';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
@@ -24,7 +27,7 @@ require('dotenv').config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      // entities: [User],
+       entities: [User,Product, ProductCategory, Auth],
       synchronize: true,
       ssl: {
         rejectUnauthorized: false,
@@ -33,7 +36,7 @@ require('dotenv').config();
     UserModule,
     ProductModule,
     AuthModule,
-    OrderModule,
+    // OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
