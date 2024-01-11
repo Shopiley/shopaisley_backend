@@ -57,3 +57,21 @@ After the initial set-up,
     ```
 
 - Make a pull request on github
+
+## Technologies and Concepts Implemented
+- Implemented Technologies and Practices
+- Turbo for Optimized Builds *
+- Monorepo Structure *
+- Tailwind CSS and Flowbite for UI 
+- SSR 
+- API Versioning 
+- PWA 
+- Router v6 
+- Code Splitting 
+- Lazy Loading
+- Internationalization with react-i18next 
+- Localization 
+- OpenAPI (Swagger) Implementation ✅
+- Server Query via Redux RTK-Query 
+- Backend: NestJS ✅
+- Frontend: Vite with React ✅
