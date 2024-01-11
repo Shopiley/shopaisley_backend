@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Auth } from 'src/auth/entities/auth.entity';
 import { AuthService } from 'src/auth/auth.service';
+import { UserResponseDto } from './dto/user-response.dto';
 
 @Injectable()
 export class UserService {
@@ -16,7 +17,7 @@ export class UserService {
     private readonly authRepository: Repository<Auth>,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
     const existingUser = await this.findOneByEmail(createUserDto.email);
     if (existingUser) {
       throw new ConflictException('User already exists');
@@ -37,19 +38,20 @@ export class UserService {
     const { password } = createUserDto;
 
     const auth = this.authRepository.create({
-      // userId: savedUser.id,
+      userId: savedUser.id,
       password: password,
-      user: savedUser,
+      // user: savedUser,
     });
 
     await this.authRepository.save(auth);
 
     // Assign the auth relation to the user and save the user entity with the updated relation
+    const response = new UserResponseDto(savedUser);
+
     savedUser.auth = auth;
     await this.userRepository.save(savedUser);
 
-    console.log(savedUser);
-    return savedUser;
+    return response;
   }
 
   findAll() {
