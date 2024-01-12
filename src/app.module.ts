@@ -26,7 +26,7 @@ require('dotenv').config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Auth, Product, ProductCategory ],
+      entities: [User, Auth, Product, ProductCategory],
       synchronize: true,
       ssl: {
         rejectUnauthorized: false,

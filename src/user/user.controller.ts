@@ -7,7 +7,11 @@ import {
   Param,
   Delete,
   Version,
+  HttpStatus,
+  Res
 } from '@nestjs/common';
+import { Response } from 'express';
+// import { JSONResponse } from 'nestjs-json-response';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -22,8 +26,9 @@ export class UserController {
   @Post('create')
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({ status: 201, description: 'User successfully created' })
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  create(@Body() createUserDto: CreateUserDto, @Res() response: Response) {
+    const response_data = this.userService.create(createUserDto);
+    return response.status(HttpStatus.OK).json(response_data);
   }
 
   @Get()
