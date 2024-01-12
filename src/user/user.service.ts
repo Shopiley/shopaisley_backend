@@ -38,8 +38,8 @@ export class UserService {
     const { password } = createUserDto;
 
     const auth = this.authRepository.create({
-      userId: savedUser.id,
       password: password,
+      userId: savedUser.id,
       // user: savedUser,
     });
 
