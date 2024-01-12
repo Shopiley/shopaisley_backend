@@ -9,6 +9,8 @@ import { DataSource } from 'typeorm';
 import { AuthModule } from './auth/auth.module';
 import { Auth } from './auth/entities/auth.entity';
 import { User } from './user/entities/user.entity';
+import { Product } from './product/entities/product.entity';
+import { ProductCategory } from './product/entities/productcategory.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
@@ -24,7 +26,7 @@ require('dotenv').config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Auth],
+      entities: [User, Auth, Product, ProductCategory ],
       synchronize: true,
       ssl: {
         rejectUnauthorized: false,
