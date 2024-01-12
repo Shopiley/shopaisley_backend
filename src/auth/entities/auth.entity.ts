@@ -12,7 +12,7 @@ export class Auth {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: false })
   userId: string;
 
   @Column()
