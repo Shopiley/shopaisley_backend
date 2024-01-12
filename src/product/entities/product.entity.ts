@@ -8,7 +8,7 @@ import {
 export class Product{
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  
+
   @Column()
   name: string;
 
@@ -18,7 +18,7 @@ export class Product{
   @Column()
   unitPrice: number;
 
-  @Column({ default: true })
+  @Column()
   SKU: string;
 
   @Column()
@@ -34,7 +34,6 @@ export class Product{
   discountId: number;
 
   @Column()
-  categoryid: number;
+  categoryId: number;
 
 }
-
