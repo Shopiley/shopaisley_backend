@@ -13,6 +13,7 @@ import { ProductCategory } from './product/entities/productcategory.entity';
 import { ShoppingModule } from './shopping/shopping.module';
 import { Shopping } from 'src/shopping/entities/shopping.entity';
 import { CartItem } from 'src/shopping/entities/cart_item.entity';
+import { Auth } from './auth/entities/auth.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
@@ -29,7 +30,7 @@ require('dotenv').config();
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       // entities: [User],
-      entities: [Product,ProductCategory,User],
+      entities: [User, Auth, Product, ProductCategory],
       synchronize: true,
       ssl: {
         rejectUnauthorized: false,
