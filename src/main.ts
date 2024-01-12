@@ -1,4 +1,3 @@
-import './search/search.controller.js'; // Adjust path as needed
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
