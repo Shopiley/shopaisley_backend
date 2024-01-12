@@ -1,10 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
-
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
-export class Product {
+export class Product{
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column()
   name: string;
@@ -30,6 +33,7 @@ export class Product {
   @Column()
   discountId: number;
 
-  @Column({ name: 'categoryid' }) // This is the foreign key
+  @Column()
   categoryId: number;
+
 }
