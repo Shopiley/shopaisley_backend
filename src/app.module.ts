@@ -6,11 +6,14 @@ import { ProductModule } from './product/product.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { AuthModule } from './auth/auth.module';
-import { Auth } from './auth/entities/auth.entity';
 import { User } from './user/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 import { Product } from './product/entities/product.entity';
 import { ProductCategory } from './product/entities/productcategory.entity';
+import { ShoppingModule } from './shopping/shopping.module';
+import { Shopping } from 'src/shopping/entities/shopping.entity';
+import { CartItem } from 'src/shopping/entities/cart_item.entity';
+import { Auth } from './auth/entities/auth.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
@@ -35,6 +38,7 @@ require('dotenv').config();
     UserModule,
     ProductModule,
     AuthModule,
+    ShoppingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -42,3 +46,9 @@ require('dotenv').config();
 export class AppModule {
   constructor(private dataSource: DataSource) {}
 }
+// app.module.ts
+
+
+
+
+
