@@ -9,6 +9,7 @@ import { DataSource } from 'typeorm';
 import { User } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { Product } from './product/entities/product.entity';
+import { ShoppingModule } from './shopping/shopping.module';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
