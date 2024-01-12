@@ -12,9 +12,7 @@ export class ProductService {
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
   ) {}
-  /*create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
-  }*/
+
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const newProduct = this.productRepository.create(createProductDto);
     return this.productRepository.save(newProduct);
@@ -35,17 +33,20 @@ export class ProductService {
     const options: FindOneOptions<Product> = {
       where: { id },
     };
-  
+
     const product = await this.productRepository.findOne(options);
-  
+
     if (!product) {
       throw new NotFoundException('Product not found');
     }
-  
+
     return product;
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto): Promise<Product> {
+  async update(
+    id: string,
+    updateProductDto: UpdateProductDto,
+  ): Promise<Product> {
     const existingProduct = await this.findOne(id);
     Object.assign(existingProduct, updateProductDto);
     return this.productRepository.save(existingProduct);
@@ -60,5 +61,4 @@ export class ProductService {
   /*remove(id: number) {
     return `This action removes a #${id} product`;
   }*/
-
 }

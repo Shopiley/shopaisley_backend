@@ -40,5 +40,8 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsNumber()
   categoryId: number;
+}
 
+export class CreateProductDtoResponse extends CreateProductDto {
+  readonly id: string;
 }
