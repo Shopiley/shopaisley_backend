@@ -7,6 +7,8 @@ import { Product } from './entities/product.entity';
 import { FindOneOptions } from 'typeorm';
 
 @Injectable()
+
+
 export class ProductService {
   constructor(
     @InjectRepository(Product)
@@ -57,8 +59,12 @@ export class ProductService {
       throw new NotFoundException('Product not found');
     }
   }
+}
   /*remove(id: number) {
     return `This action removes a #${id} product`;
-  }*/
-
+  }
+  async findOneByid(id: number): Promise<Product | undefined> {
+    return await this.productRepository.findOne({ where: { id } });
+  }
 }
+*/
