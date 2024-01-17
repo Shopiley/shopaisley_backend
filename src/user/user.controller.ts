@@ -6,9 +6,8 @@ import {
   Patch,
   Param,
   Delete,
-  Version,
   HttpStatus,
-  Res
+  Res,
 } from '@nestjs/common';
 import { Response } from 'express';
 // import { JSONResponse } from 'nestjs-json-response';
@@ -31,6 +30,7 @@ export class UserController {
     return response.status(HttpStatus.OK).json(response_data);
   }
 
+  // @Version('1')
   @Get()
   findAll() {
     return this.userService.findAll();
@@ -45,11 +45,13 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
+  // @Version('1')
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
 
+  // @Version('1')
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);

@@ -1,4 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,52 +14,44 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
+
   async create(createProductDto: CreateProductDto): Promise<Product> {
-    const newProduct = this.productRepository.create(createProductDto);
+    const newProduct: Product = this.productRepository.create(createProductDto);
     return this.productRepository.save(newProduct);
   }
 
-  findAll() {
-    return `This action returns all product`;
+
+  async findAll() {
+    return this.productRepository.find();
   }
 
-  /*findOne(id: number) {
-    return `This action returns a #${id} product`;
-  }*/
 
-  /*update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
-  }*/
-  async findOne(id: string): Promise<Product> {
+  async findOne(id: string): Promise<Product|null> {
     const options: FindOneOptions<Product> = {
       where: { id },
     };
 
     const product = await this.productRepository.findOne(options);
 
-    if (!product) {
-      throw new NotFoundException('Product not found');
-    }
+    // if (!product) {
+    //   throw new NotFoundException('Product not found');
+    // }
 
     return product;
   }
 
-  async update(
-    id: string,
-    updateProductDto: UpdateProductDto,
-  ): Promise<Product> {
+
+  async update(id: string, updateProductDto: UpdateProductDto): Promise<Product> {
     const existingProduct = await this.findOne(id);
     Object.assign(existingProduct, updateProductDto);
     return this.productRepository.save(existingProduct);
   }
 
   async remove(id: string): Promise<void> {
-    const result = await this.productRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException('Product not found');
-    }
+    await this.productRepository.delete(id);
+    // if (result.affected === 0) {
+    //   throw new NotFoundException('Product not found');
+    // }
   }
-  /*remove(id: number) {
-    return `This action removes a #${id} product`;
-  }*/
+
 }
