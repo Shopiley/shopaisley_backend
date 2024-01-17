@@ -1,20 +1,20 @@
 import express from 'express';
 import { Pool } from 'pg';
-import { Client } from '@elastic/elasticsearch';
+import { Client } from 'elasticsearch';
 
 const router = express.Router();
 
 const pgConfig = {
-  user: 'your_pg_user',
-  host: 'localhost',
-  database: 'your_database',
-  password: 'your_password',
+  user: 'shopaisley_user',
+  host: 'dpg-cm2bifi1hbls73epecvg-a.oregon-postgres.render.com',
+  database: 'shopaisley',
+  password: 'qniQ0b9Eurl28kMyehSU0Ddn8qgzQPSm',
   port: 5432,
 };
 
 const pgPool = new Pool(pgConfig);
 
-const esClient = new Client({ node: 'http://localhost:9200' });
+const esClient = new Client({ nodesToHostCallback: 'http://localhost:9200' });
 
 router.get('/search', async (req, res) => {
   const query = req.query.q;
@@ -40,7 +40,7 @@ router.get('/search', async (req, res) => {
 
     const results = {
       postgresResults: pgResult.rows,
-      elasticResults: esResult.body.hits.hits,
+      elasticResults: esResult.hits.hits,
     };
 
     res.json(results);

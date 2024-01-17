@@ -2,7 +2,7 @@ import express from 'express';
 import { Client } from 'elasticsearch';
 
 const app = express();
-const esClient = new Client({ node: 'http://localhost:9200' });
+const esClient = new Client({ nodesToHostCallback: 'http://localhost:9200' });
 
 app.use(express.json());
 
