@@ -42,9 +42,9 @@ export class UserService {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+  // update(id: number, updateUserDto: UpdateUserDto) {
+  //   return `This action updates a #${id} user`;
+  // }
 
 
   remove(id: number) {
@@ -56,14 +56,13 @@ export class UserService {
 
   }
 
- /* async update(id: Number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.userRepository.findOne(+id);
-
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.userRepository.findOneBy({id: id});
+  
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-
-    
+  
     if (updateUserDto.firstName) {
       user.firstName = updateUserDto.firstName;
     }
@@ -73,18 +72,19 @@ export class UserService {
     if (updateUserDto.phoneNo) {
       user.phoneNo = updateUserDto.phoneNo;
     }
-    if (updateUserDto.isActive) {
+    if (updateUserDto.isActive !== undefined) {
       user.isActive = updateUserDto.isActive;
     }
     if (updateUserDto.email) {
       user.email = updateUserDto.email;
     }
-
+  
     // Save the updated user entity back to the database
     await this.userRepository.save(user);
-
+  
     return user;
-  } */
+  }
+  
 
 
 }
