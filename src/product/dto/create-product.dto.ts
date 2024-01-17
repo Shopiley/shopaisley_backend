@@ -5,27 +5,27 @@ export class CreateProductDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  readonly name: string;
+  name: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  readonly description: string;
+  description: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
-  readonly unitPrice: number;
+  unitPrice: number;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  readonly SKU: string;
+  SKU: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  readonly ImageURL: string;
+  ImageURL: string;
 
   // not needed, it populates itself automatically, check entity
   // @ApiProperty()
@@ -41,12 +41,12 @@ export class CreateProductDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
-  readonly discountId: number;
+  discountId: number;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
-  readonly categoryId: number;
+  categoryId: number;
 }
 
 export class CreateProductDtoResponse extends CreateProductDto {
