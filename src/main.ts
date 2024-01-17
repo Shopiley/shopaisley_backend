@@ -18,10 +18,10 @@ async function bootstrap() {
   });
 
   try {
-    SwaggerModule.setup('docs', app, document, {
-      // swaggerOptions: {
-      //   baseUrl: '/backend/v1',
-      // },
+    SwaggerModule.setup('/v1/docs', app, document, {
+      swaggerOptions: {
+        baseUrl: '/v1',
+      },
     });
   } catch (error) {
     this.logger.error(error);

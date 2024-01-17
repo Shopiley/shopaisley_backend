@@ -1,11 +1,8 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+/* eslint-disable prettier/prettier */
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Product{
+export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -18,16 +15,19 @@ export class Product{
   @Column()
   unitPrice: number;
 
-  @Column()
+  @Column({nullable: true})
+  inventory_qty: number;
+
+  @Column({ unique:true })
   SKU: string;
 
   @Column()
   ImageURL: string;
 
-  @Column()
+  @Column({ default: () => 'CURRENT_TIMESTAMP'})
   CreatedAt: Date;
 
-  @Column()
+  @Column({ default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   ModifiedAt: Date;
 
   @Column()
@@ -35,5 +35,4 @@ export class Product{
 
   @Column()
   categoryId: number;
-
 }
