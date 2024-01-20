@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { OrderService } from './order.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { OrderService } from './order.service';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('order')
 export class OrderController {
@@ -17,18 +26,22 @@ export class OrderController {
     return this.orderService.findAll();
   }
 
-  @Get(':id')
+  @Get()
   findOne(@Param('id') id: string) {
-    return this.orderService.findOne(+id);
+    return this.orderService.findOne(id);
   }
 
-  @Patch(':id')
+  /* @Get()
+  findOrderHistoryByUser(@Param('userId') userId: string) {
+    return this.orderService.findOrderHistoryByUser(+userId);
+  }*/
+
+  @Patch()
   update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(+id, updateOrderDto);
+    return this.orderService.update(id, updateOrderDto);
   }
-
-  @Delete(':id')
+  @Delete()
   remove(@Param('id') id: string) {
-    return this.orderService.remove(+id);
+    return this.orderService.remove(id);
   }
 }

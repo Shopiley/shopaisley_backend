@@ -1,26 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { OrderItem } from './entities/order_items.entity';
+import { OrderDetails } from './entities/order_details.entity';
+import { FindOneOptions } from 'typeorm';
 
 @Injectable()
 export class OrderService {
-  create(createOrderDto: CreateOrderDto) {
-    return 'This action adds a new order';
+  constructor(
+    @InjectRepository(OrderItem)
+    private readonly orderItemRepository: Repository<OrderItem>,
+
+    @InjectRepository(OrderDetails)
+    private readonly orderDetailsRepository: Repository<OrderDetails>,
+  ) {}
+
+  async create(createOrderDto: CreateOrderDto): Promise<OrderItem> {
+    const newOrder = this.orderItemRepository.create(createOrderDto);
+    return this.orderItemRepository.save(newOrder);
   }
 
-  findAll() {
-    return `This action returns all order`;
+  async update(id: string, updateOrderDto: UpdateOrderDto): Promise<OrderItem> {
+    const existingOrder = await this.findOne(id);
+    Object.assign(existingOrder, updateOrderDto);
+    return this.orderItemRepository.save(existingOrder);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async remove(id: string): Promise<void> {
+    const result = await this.orderItemRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException('Order not found');
+    }
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  findAll(): Promise<OrderItem[]> {
+    return this.orderItemRepository.find();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  async findOne(id: string): Promise<OrderItem> {
+    const options: FindOneOptions<OrderItem> = {
+      where: { id },
+    };
+    const product = await this.orderItemRepository.findOne(options);
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+    return product;
   }
 }
