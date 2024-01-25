@@ -23,7 +23,7 @@ export class UserService {
       throw new ConflictException('User already exists');
     }
 
-    const { firstName, lastName, email, phoneNo, isActive } = createUserDto;
+    const { firstName, lastName, email, phoneNo, isActive, password } = createUserDto;
 
     const user = this.userRepository.create({
       firstName,
@@ -31,17 +31,13 @@ export class UserService {
       email,
       phoneNo,
       isActive,
+      password,
     });
 
     const savedUser = await this.userRepository.save(user);
 
-    const { password } = createUserDto;
+  
 
-    const auth = this.authRepository.create({
-      password: password,
-      userId: savedUser.id,
-      // user: savedUser,
-    });
 
     if (!user) {
       throw new NotFoundException(`User with ID  not found`);

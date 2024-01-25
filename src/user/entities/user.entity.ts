@@ -27,7 +27,7 @@ export class User {
   @Column()
   email: string;
 
-  @OneToOne(() => Auth, { cascade: true, eager: true }) // eager: true loads Auth entity when loading User
-  @JoinColumn() // This is the owner side of the relationship
-  auth: Auth;
+  @Column()
+  password: string;
+
 }
