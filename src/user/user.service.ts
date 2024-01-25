@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -18,7 +18,7 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
-    const existingUser = await this.findOneByEmail(createUserDto.email);
+    const existingUser: User = await this.findOneByEmail(createUserDto.email);
     if (existingUser) {
       throw new ConflictException('User already exists');
     }
@@ -43,34 +43,68 @@ export class UserService {
       // user: savedUser,
     });
 
-    await this.authRepository.save(auth);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
 
-    // Assign the auth relation to the user and save the user entity with the updated relation
-    const response = new UserResponseDto(savedUser);
-
-    savedUser.auth = auth;
-    await this.userRepository.save(savedUser);
-
-    return response;
+    return user;
+  }
+  
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find();
   }
 
-  findAll() {
-    return `This action returns all user`;
-  }
+  async findById(id: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { id: id },
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return user;
   }
-
+  
+  
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
 
   async findOneByEmail(email: string): Promise<User | undefined> {
     return await this.userRepository.findOne({ where: { email } });
+
   }
+
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.userRepository.findOneBy({id: id});
+  
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+  
+    if (updateUserDto.firstName) {
+      user.firstName = updateUserDto.firstName;
+    }
+    if (updateUserDto.lastName) {
+      user.lastName = updateUserDto.lastName;
+    }
+    if (updateUserDto.phoneNo) {
+      user.phoneNo = updateUserDto.phoneNo;
+    }
+    if (updateUserDto.isActive !== undefined) {
+      user.isActive = updateUserDto.isActive;
+    }
+    if (updateUserDto.email) {
+      user.email = updateUserDto.email;
+    }
+  
+    // Save the updated user entity back to the database
+    await this.userRepository.save(user);
+  
+    return user;
+  }
+  
+
+
 }

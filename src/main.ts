@@ -6,6 +6,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.enableCors();
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle(process.env.APP_NAME)
@@ -17,10 +18,10 @@ async function bootstrap() {
   });
 
   try {
-    SwaggerModule.setup('docs', app, document, {
-      // swaggerOptions: {
-      //   baseUrl: '/backend/v1',
-      // },
+    SwaggerModule.setup('/v1/docs', app, document, {
+      swaggerOptions: {
+        baseUrl: '/v1',
+      },
     });
   } catch (error) {
     this.logger.error(error);

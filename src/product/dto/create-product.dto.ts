@@ -1,9 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsNotEmpty,
-  IsString,
-  IsNumber,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
 
 export class CreateProductDto {
   @ApiProperty()
@@ -31,6 +27,17 @@ export class CreateProductDto {
   @IsString()
   ImageURL: string;
 
+  // not needed, it populates itself automatically, check entity
+  // @ApiProperty()
+  // @IsNotEmpty()
+  // @IsDate()
+  // readonly CreatedAt: Date;
+
+  // @ApiProperty()
+  // @IsNotEmpty()
+  // @IsDate()
+  // readonly ModifiedAt: Date;
+
   @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
@@ -40,5 +47,8 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsNumber()
   categoryId: number;
+}
 
+export class CreateProductDtoResponse extends CreateProductDto {
+  readonly id: string;
 }
