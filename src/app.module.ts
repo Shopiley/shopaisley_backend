@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -11,9 +12,8 @@ import { AuthModule } from './auth/auth.module';
 import { Product } from './product/entities/product.entity';
 import { ProductCategory } from './product/entities/productcategory.entity';
 import { ShoppingModule } from './shopping/shopping.module';
-import { Shopping } from 'src/shopping/entities/shopping.entity';
-import { CartItem } from 'src/shopping/entities/cart_item.entity';
 import { Auth } from './auth/entities/auth.entity';
+import { FilterModule } from './filter_search/filter_search.module';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
@@ -39,6 +39,7 @@ require('dotenv').config();
     ProductModule,
     AuthModule,
     ShoppingModule,
+    FilterModule,
   ],
   controllers: [AppController],
   providers: [AppService],
