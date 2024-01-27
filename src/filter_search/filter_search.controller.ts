@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Get,  Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express'; // Import Request and Response
 import { FilterService } from './filter_search.service';
