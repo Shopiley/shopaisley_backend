@@ -16,6 +16,7 @@ import { Shopping } from 'src/shopping/entities/shopping.entity';
 import { CartItem } from 'src/shopping/entities/cart_item.entity';
 import { Auth } from './auth/entities/auth.entity';
 import { Merchant } from './merchant/entities/merchant.entity';
+import { FilterModule } from './filter_search/filter_search.module';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
@@ -42,6 +43,7 @@ require('dotenv').config();
     AuthModule,
     ShoppingModule,
     MerchantModule,
+    FilterModule
   ],
   controllers: [AppController],
   providers: [AppService],
