@@ -5,7 +5,7 @@ import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import {MerchantModule} from './merchant/merchant.module';
+import { MerchantModule } from './merchant/merchant.module';
 import { DataSource } from 'typeorm';
 import { User } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
@@ -31,7 +31,7 @@ require('dotenv').config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User,Product, ProductCategory, Merchant],
+      entities: [User, Product, ProductCategory, Merchant],
       synchronize: true,
       ssl: {
         rejectUnauthorized: false,
@@ -42,7 +42,7 @@ require('dotenv').config();
     ShoppingModule,
     MerchantModule,
     FilterModule,
-    OrderModule
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -51,8 +51,3 @@ export class AppModule {
   constructor(private dataSource: DataSource) {}
 }
 // app.module.ts
-
-
-
-
-

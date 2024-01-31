@@ -11,7 +11,7 @@ export class OrderItems {
   @Column()
   product_id: string;
 
-  @Column({ default: () => 'CURRENT_TIMESTAMP'})
+  @Column({ default: () => 'CURRENT_TIMESTAMP' })
   CreatedAt: Date;
 
   @Column({ default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
