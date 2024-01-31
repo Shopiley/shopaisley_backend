@@ -2,13 +2,38 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsEmail,
-  IsBoolean,
   IsOptional,
   IsPhoneNumber,
   IsString,
+  IsBoolean,
 } from 'class-validator';
 
-export class CreateUserDto {
+export class CreateMerchantDto {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  BusinessName: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  BusinessDescription: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  // @IsPhoneNumber()
+  phoneNo: string;
+
+  @ApiProperty()
+  @IsOptional()
+  BusinessAddress: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsEmail()
+  @IsString()
+  email: string;
+
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -21,22 +46,11 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  // @IsPhoneNumber()
-  phoneNo: string;
+  @IsString()
+  password: string;
 
   @ApiProperty()
   @IsOptional()
   @IsBoolean()
   isActive: boolean = true;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsEmail()
-  @IsString()
-  email: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  password: string;
 }
