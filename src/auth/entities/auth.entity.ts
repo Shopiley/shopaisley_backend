@@ -18,6 +18,4 @@ export class Auth {
   @Column()
   password: string;
 
-  @OneToOne(() => User, (user) => user.auth)
-  user: User;
 }

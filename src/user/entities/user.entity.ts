@@ -1,11 +1,4 @@
-import { Auth } from 'src/auth/entities/auth.entity';
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 
 @Entity()
 export class User {
@@ -18,16 +11,16 @@ export class User {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({ unique: true })
   phoneNo: string;
 
   @Column({ default: true })
   isActive: boolean;
 
   @Column()
+  @Index({ unique: true })
   email: string;
 
-  @OneToOne(() => Auth, { cascade: true, eager: true }) // eager: true loads Auth entity when loading User
-  @JoinColumn() // This is the owner side of the relationship
-  auth: Auth;
+  @Column()
+  password: string;
 }

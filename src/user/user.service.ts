@@ -1,29 +1,30 @@
+/* eslint-disable prettier/prettier */
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Auth } from 'src/auth/entities/auth.entity';
-import { AuthService } from 'src/auth/auth.service';
 import { UserResponseDto } from './dto/user-response.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    @InjectRepository(Auth)
-    private readonly authRepository: Repository<Auth>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
     const existingUser: User = await this.findOneByEmail(createUserDto.email);
     if (existingUser) {
-      throw new ConflictException('User already exists');
+      throw new ConflictException('User with this email already exists');
     }
 
-    const { firstName, lastName, email, phoneNo, isActive } = createUserDto;
+    const { firstName, lastName, email, phoneNo, isActive, password } = createUserDto;
+
+    
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = this.userRepository.create({
       firstName,
@@ -31,24 +32,16 @@ export class UserService {
       email,
       phoneNo,
       isActive,
+      password: hashedPassword, 
     });
 
     const savedUser = await this.userRepository.save(user);
 
-    const { password } = createUserDto;
+    const response = new UserResponseDto(savedUser);
 
-    const auth = this.authRepository.create({
-      password: password,
-      userId: savedUser.id,
-      // user: savedUser,
-    });
-
-    if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
-    }
-
-    return user;
+    return response;
   }
+
   
   async findAll(): Promise<User[]> {
     return this.userRepository.find();
