@@ -4,7 +4,7 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OrderDetails } from 'src/order/entities/orderdetails.entity';
-//import { FindOneOptions } from 'typeorm';
+import { FindOneOptions } from 'typeorm';
 
 @Injectable()
 export class OrderService {
@@ -17,12 +17,22 @@ export class OrderService {
   return this.orderRepository.save(newOrder);
   }
 
-  findAll() {
-    return `This action returns all order`;
+  async findAll() {
+    return this.orderRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findOne(id: number): Promise<OrderDetails | null> {
+    const options: FindOneOptions<OrderDetails> = {
+      where: { id },
+    };
+
+    const order = await this.orderRepository.findOne(options);
+
+    // if (!product) {
+    //   throw new NotFoundException('Product not found');
+    // }
+
+    return order;
   }
 
   update(id: number, updateOrderDto: UpdateOrderDto) {
