@@ -12,7 +12,7 @@ export class ProductService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-  ) {}
+  ) { }
 
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
@@ -26,17 +26,30 @@ export class ProductService {
   }
 
 
-  async findOne(id: string): Promise<Product|null> {
+  async findOne(id: string): Promise<Product | null> {
     const options: FindOneOptions<Product> = {
       where: { id },
     };
 
     const product = await this.productRepository.findOne(options);
+    return product;
+  }
 
-    // if (!product) {
-    //   throw new NotFoundException('Product not found');
-    // }
+  async findProductByCategory(category: string) {
+    const options = {
+      where: { category },
+    };
+    const product = await this.productRepository.find(options);
+    return product;
 
+  }
+
+  async findProductBySubCategory(subCategory: string) {
+    const options = {
+      where: { subCategory: subCategory },
+    };
+
+    const product = await this.productRepository.find(options);
     return product;
   }
 
@@ -49,9 +62,6 @@ export class ProductService {
 
   async remove(id: string): Promise<void> {
     await this.productRepository.delete(id);
-    // if (result.affected === 0) {
-    //   throw new NotFoundException('Product not found');
-    // }
   }
 
 }
