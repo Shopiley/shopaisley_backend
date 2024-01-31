@@ -1,1 +1,19 @@
-export class OrderItem {}
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity()
+export class OrderItems {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
+  order_id: string;
+
+  @Column()
+  product_id: string;
+
+  @Column({ default: () => 'CURRENT_TIMESTAMP'})
+  CreatedAt: Date;
+
+  @Column({ default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  ModifiedAt: Date;
+}
