@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Controller,
   Get,
@@ -26,9 +27,13 @@ export class MerchantController {
   @Post('create')
   @ApiOperation({ summary: 'Create a new merchant' })
   @ApiResponse({ status: 201, description: 'merchant successfully created' })
-  create(@Body() createMerchantDto: CreateMerchantDto, @Res() response: Response) {
-    const response_data = this.merchantService.create(createMerchantDto);
-    return response.status(HttpStatus.OK).json(response_data);
+  async create(@Body() createMerchantDto: CreateMerchantDto, @Res() response: Response) {
+    const response_data = await this.merchantService.create(createMerchantDto);
+    response.status(HttpStatus.CREATED).json({
+      status: 'success',
+      message: 'Merchant created successfully',
+      data: response_data,
+    });
   }
 
   // @Version('1')
