@@ -2,17 +2,35 @@ import {
   Controller,
   Get,
   Param,
+  Delete,
+  Res,
   HttpStatus,
   NotFoundException,
-  Res,
+  Post,
+  Body, 
+  Patch,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
+import { CreateOrderDto } from './dto/create-order.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('order')
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
+
+  @Post()
+  @ApiOperation({ summary: 'Create a new order' })
+  @ApiResponse({ status: 201, description: 'Order successfully created' })
+  async create(@Body() createOrderDto: CreateOrderDto, @Res() response) {
+    const data = await this.orderService.create(createOrderDto);
+    response.status(HttpStatus.CREATED).json({
+    status: 'success',
+    message: 'Order created successfully',
+    data: data,
+    });
+  }
 
   @Get()
   @ApiOperation({ summary: 'Get all orders' })
@@ -56,17 +74,3 @@ export class OrderController {
   }
 }
 
-/*
-
-
-  // GET /orders/user/:userId
-  @Get('user/:userId')
-  async getOrderHistoryByUserId(
-    @Param('userId') userId: string,
-  ): Promise<OrderDetails[]> {
-    // Logic to retrieve order history by userId
-    const orders = await OrderDetails.find({ where: { user_id: userId } });
-    return orders;
-  }
-}
-*/

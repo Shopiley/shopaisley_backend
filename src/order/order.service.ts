@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { CreateOrderDto } from './dto/create-order.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { OrderDetails } from './entities/orderdetails.entity';
+import { OrderDetails } from 'src/order/entities/orderdetails.entity';
 import { FindOneOptions } from 'typeorm';
 
 @Injectable()
@@ -10,6 +12,10 @@ export class OrderService {
     @InjectRepository(OrderDetails)
     private readonly orderRepository: Repository<OrderDetails>,
   ) {}
+  async create(createOrderDto: CreateOrderDto): Promise<OrderDetails> {
+  const newOrder: OrderDetails = this.orderRepository.create(createOrderDto);
+  return this.orderRepository.save(newOrder);
+  }
 
   async findAll() {
     return this.orderRepository.find();
@@ -28,29 +34,12 @@ export class OrderService {
 
     return order;
   }
-}
 
-/*import { Injectable } from '@nestjs/common';
-import { OrderDetails } from 'src/order/entities/orderdetails.entity'; // Replace with the correct path
-
-@Injectable()
-export class OrderService {
-  async getAllOrders(): Promise<OrderDetails[]> {
-    // Logic to retrieve all orders
-    const orders = await OrderDetails.find();
-    return orders;
+  update(id: number, updateOrderDto: UpdateOrderDto) {
+    return `This action updates a #${id} order`;
   }
 
-  async getOrderById(orderId: string): Promise<OrderDetails> {
-    // Logic to retrieve order by orderId
-    const order = await OrderDetails.findOne(orderId);
-    return order;
-  }
-
-  async getOrderHistoryByUserId(userId: string): Promise<OrderDetails[]> {
-    // Logic to retrieve order history by userId
-    const orders = await OrderDetails.find({ where: { user_id: userId } });
-    return orders;
+  remove(id: number) {
+    return `This action removes a #${id} order`;
   }
 }
-*/
