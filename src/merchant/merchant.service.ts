@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MerchantResponseDto } from './dto/merchant-response.dto';
 import { User } from 'src/user/entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class MerchantService {
@@ -34,11 +35,13 @@ export class MerchantService {
 
 
     const savedMerchant = await this.merchantRepository.save(merchant);
+    
 
     const { password, firstName, lastName, phoneNo  } = createMerchantDto;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = this.userRepository.create({
-      password: password,
+        password: hashedPassword,
         firstName: firstName,
         lastName: lastName,
         email: email,

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Repository } from 'typeorm';
+import { Repository, ILike, Between } from 'typeorm'; // Import the ILike operator
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/product/entities/product.entity';
 import { Injectable } from '@nestjs/common';
@@ -11,18 +11,13 @@ export class FilterService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async getFilteredProducts(query: Record<string, any>) {
+  async getSearchedName(query: Record<string, any>) {
     try {
-      const { n, up, iq } = query;
+      const { n } = query;
 
       const where: Record<string, any> = {};
 
-      if (n) where.name = n;
-
-      if (up) where.unitPrice = parseFloat(up);
-
-      if (iq) where.inventory_qty = parseInt(iq, 10);
-
+      if (n) where.name = ILike(`%${n}%`); // Use ILike operator for case-insensitive partial matching
       const searchResult = await this.productRepository.find({ where });
 
       return searchResult;
@@ -31,4 +26,22 @@ export class FilterService {
       throw err; // You can handle the error at the controller level
     }
   }
+
+  async getRangePrice( min: string, max: string){
+    try{
+      const where: Record<string, any> ={};
+      if (min && max) {
+        where.unitPrice = Between(parseFloat(min), parseFloat(max));
+      } else if (min) {
+        where.unitPrice = Between(parseFloat(min), Infinity);
+      } else if (max) {
+        where.unitPrice = Between(0, parseFloat(max));
+      }
+      const searchResult = await this.productRepository.find({ where });
+      return searchResult;
+    }catch (err) {
+      console.error(err);
+      throw err;
+  }
+}
 }

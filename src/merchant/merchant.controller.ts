@@ -53,17 +53,30 @@ export class MerchantController {
   }
 */
 @Get(':id')
-  async findOne(@Param('id') id: string) {
-    try {
-      const merchant = await this.merchantService.findById(id);
-      return merchant; // You can return the merchant directly or create a DTO for a more structured response
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(error.message);
-      }
-      throw error; // Rethrow other errors
+async findOne(@Param('id') id: string, @Res() response: Response) {
+  try {
+    const merchant = await this.merchantService.findById(id);
+    response.status(HttpStatus.OK).json({
+      status: 'success',
+      message: 'Merchant Found',
+      data: merchant,
+    });
+    return merchant; // You can choose to remove this line if the return value is not needed
+  } catch (error) {
+    if (error instanceof NotFoundException) {
+      response.status(HttpStatus.NOT_FOUND).json({
+        status: 'error',
+        message: error.message,
+      });
+    } else {
+      response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        status: 'error',
+        message: 'Internal Server Error',
+      });
     }
+    throw error; // Rethrow other errors
   }
+}
 
   // @Version('1')
   @Patch(':id')

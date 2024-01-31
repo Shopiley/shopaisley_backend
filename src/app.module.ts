@@ -12,8 +12,6 @@ import { AuthModule } from './auth/auth.module';
 import { Product } from './product/entities/product.entity';
 import { ProductCategory } from './product/entities/productcategory.entity';
 import { ShoppingModule } from './shopping/shopping.module';
-import { Shopping } from 'src/shopping/entities/shopping.entity';
-import { CartItem } from 'src/shopping/entities/cart_item.entity';
 import { Auth } from './auth/entities/auth.entity';
 import { Merchant } from './merchant/entities/merchant.entity';
 import { FilterModule } from './filter_search/filter_search.module';
@@ -32,7 +30,7 @@ require('dotenv').config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Auth, Product, ProductCategory, Merchant],
+      entities: [User,Product, ProductCategory, Merchant],
       synchronize: true,
       ssl: {
         rejectUnauthorized: false,
@@ -40,7 +38,6 @@ require('dotenv').config();
     }),
     UserModule,
     ProductModule,
-    AuthModule,
     ShoppingModule,
     MerchantModule,
     FilterModule
