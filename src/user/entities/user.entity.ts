@@ -1,10 +1,9 @@
-import { Auth } from 'src/auth/entities/auth.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column()
   firstName: string;
@@ -12,15 +11,16 @@ export class User {
   @Column()
   lastName: string;
 
-  @Column()
-  phoneNum: string;
+  @Column({ unique: true })
+  phoneNo: string;
 
   @Column({ default: true })
   isActive: boolean;
 
   @Column()
+  @Index({ unique: true })
   email: string;
 
-  @OneToOne(() => Auth, { cascade: true })
-  auth: Auth;
+  @Column()
+  password: string;
 }
