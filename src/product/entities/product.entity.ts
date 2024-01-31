@@ -34,5 +34,8 @@ export class Product {
   discountId: number;
 
   @Column()
-  categoryId: number;
+  category: string;
+
+  @Column()
+  subCategory: string;
 }
