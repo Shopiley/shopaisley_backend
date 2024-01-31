@@ -5,7 +5,6 @@ import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Auth } from 'src/auth/entities/auth.entity';
-import { AuthService } from 'src/auth/auth.service';
 import { UserResponseDto } from './dto/user-response.dto';
 
 @Injectable()
