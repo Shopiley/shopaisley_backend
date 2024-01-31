@@ -5,15 +5,16 @@ import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import {MerchantModule} from './merchant/merchant.module';
 import { DataSource } from 'typeorm';
 import { User } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { Product } from './product/entities/product.entity';
 import { ProductCategory } from './product/entities/productcategory.entity';
 import { ShoppingModule } from './shopping/shopping.module';
-import { Shopping } from 'src/shopping/entities/shopping.entity';
-import { CartItem } from 'src/shopping/entities/cart_item.entity';
 import { Auth } from './auth/entities/auth.entity';
+import { Merchant } from './merchant/entities/merchant.entity';
+import { FilterModule } from './filter_search/filter_search.module';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
@@ -29,7 +30,7 @@ require('dotenv').config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Auth, Product, ProductCategory],
+      entities: [User,Product, ProductCategory, Merchant],
       synchronize: true,
       ssl: {
         rejectUnauthorized: false,
@@ -37,8 +38,9 @@ require('dotenv').config();
     }),
     UserModule,
     ProductModule,
-    AuthModule,
     ShoppingModule,
+    MerchantModule,
+    FilterModule
   ],
   controllers: [AppController],
   providers: [AppService],
