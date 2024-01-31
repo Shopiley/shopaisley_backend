@@ -1,42 +1,72 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
   Param,
-  Delete,
+  HttpStatus,
+  NotFoundException,
+  Res,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('order')
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
-  @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.orderService.create(createOrderDto);
-  }
-
   @Get()
-  findAll() {
-    return this.orderService.findAll();
+  @ApiOperation({ summary: 'Get all orders' })
+  @ApiResponse({ status: 200, description: 'Orders successfully retrieved' })
+  @ApiResponse({ status: 404, description: 'Orders not found' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @ApiResponse({ status: 503, description: 'Service unavailable' })
+  async findAll(@Res() response) {
+    const data = await this.orderService.findAll();
+
+    response.status(HttpStatus.OK).json({
+      status: 'success',
+      message: 'Orders retrieved successfully',
+      data: data,
+    });
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderService.findOne(+id);
-  }
+  @ApiOperation({ summary: 'Get order by ID' })
+  @ApiResponse({ status: 200, description: 'Order successfully retrieved' })
+  @ApiResponse({ status: 404, description: 'Order not found' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  async findOne(@Param('id') id: number, @Res() response) {
+    try {
+      const order = await this.orderService.findOne(id);
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(+id, updateOrderDto);
-  }
+      if (!order) {
+        throw new NotFoundException(`Order with id: ${id} not found`); // Use a suitable error type
+      }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderService.remove(+id);
+      response.status(HttpStatus.OK).json({
+        status: 'success',
+        message: 'Order retrieved successfully',
+        data: order,
+      });
+    } catch (error) {
+      response.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: error.message,
+      });
+    }
   }
 }
+
+/*
+
+
+  // GET /orders/user/:userId
+  @Get('user/:userId')
+  async getOrderHistoryByUserId(
+    @Param('userId') userId: string,
+  ): Promise<OrderDetails[]> {
+    // Logic to retrieve order history by userId
+    const orders = await OrderDetails.find({ where: { user_id: userId } });
+    return orders;
+  }
+}
+*/
