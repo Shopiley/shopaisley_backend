@@ -11,3 +11,5 @@ import { OrderDetails } from './entities/orderdetails.entity';
   exports: [OrderService],
 })
 export class OrderModule {}
+
+export { OrderDetails };
