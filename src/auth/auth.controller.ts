@@ -2,6 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { LoginDto } from './dto/login.dto';
+import RefreshTokenDto from './dto/refresh-token.dto';
+import { request } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -30,5 +33,23 @@ export class AuthController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.authService.remove(+id);
+  }
+
+  @Post('login')
+  async login(@Param('ip') ip:string, @Body() body : LoginDto){
+    return this.authService.login(body.email, body.password,{
+      ipAddress: ip, 
+      userAgent: request.headers['user-agent'],
+    });
+  }
+
+  @Post('refresh')
+  async refreshToken(@Body() body: RefreshTokenDto){
+    return this.authService.refresh(body.refreshToken)
+  }
+
+  @Delete("logout")
+  async logout(@Body() body: RefreshTokenDto){
+    return this.authService.logout(body.refreshToken)
   }
 }
