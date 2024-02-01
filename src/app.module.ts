@@ -37,6 +37,7 @@ require('dotenv').config();
       },
     }),
     UserModule,
+    AuthModule,
     ProductModule,
     ShoppingModule,
     MerchantModule,

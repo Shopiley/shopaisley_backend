@@ -1,34 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import RefreshToken from './entities/refresh-token.entity';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
 import { sign, verify } from 'jsonwebtoken';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
-  }
-
-constructor(private readonly userService: UserService){}
+constructor(private readonly userService: UserService,
+  private jwtService: JwtService){}
 
 private refreshTokens: RefreshToken[] =[];
 
@@ -46,7 +30,7 @@ async refresh(refreshStr: string): Promise<string | undefined>{
     userId: refreshToken.userId,
   };
 
-  return sign(accessToken, process.env.ACCESS_SECRET, {expiresIn: '1h'})
+  return sign(accessToken, process.env.ACCESS_SECRET, {expiresIn: '1d'})
 }
 private retireveRefreshToken(
   refreshStr: string,):Promise<RefreshToken | undefined>{
@@ -123,5 +107,20 @@ async logout(refreshStr): Promise<void>{
     (refreshToken) => refreshToken.id !== refreshToken.id,
   );
 }
+async signIn(email:string, pass: string): Promise<{access_token:string}>{
+  const user = await this.userService.findOneByEmail(email);
+  const comparehash = await bcrypt.compare(pass,user?.password)
+  if(comparehash === false){
+    throw new UnauthorizedException();
+  }
+  else{
+  const payload = {email: user.email}
 
+  return {
+    access_token: await this.jwtService.signAsync(payload),
+  };
 }
+}
+}
+
+
