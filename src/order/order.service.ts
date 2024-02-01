@@ -32,6 +32,15 @@ export class OrderService {
     return order;
   }
 
+  async findByUserId(user_id: string): Promise<OrderDetails | null> {
+    const options: FindOneOptions<OrderDetails> = {
+      where: { user_id },
+    };
+
+    const order = await this.orderdetailsRepository.findOne(options);
+    return order;
+  }
+
   async update(
     id: string,
     updateOrderDto: UpdateOrderDto,

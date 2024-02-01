@@ -22,5 +22,4 @@ export class UpdateOrderDto extends PartialType(CreateOrderDto) {
   @IsOptional()
   @IsString()
   readonly status?: string;
-
 }
