@@ -16,7 +16,7 @@ export class OrderDetails {
 
   @Column()
   status: string;
-  
+
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   CreatedAt: Date;
 
