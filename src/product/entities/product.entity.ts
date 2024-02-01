@@ -53,13 +53,13 @@ export class Product {
   @BeforeInsert()
   generateSKU() {
     if (!this.SKU) {
-      this.SKU = 'SKU' + this.generateRandomString(8);
+      this.SKU = 'SKU' + this.generateRandomString(5);
     }
   }
 
   // Function to generate a random alphanumeric string
   private generateRandomString(length: number): string {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters = '0123456789';
     let result = '';
 
     for (let i = 0; i < length; i++) {
