@@ -44,6 +44,10 @@ export class CreateProductDto {
   @ApiProperty()
   @IsNotEmpty()
   subCategory: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  merchantId: string;
 }
 
 export class CreateProductDtoResponse extends CreateProductDto {

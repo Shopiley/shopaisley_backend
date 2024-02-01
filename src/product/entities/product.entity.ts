@@ -38,4 +38,7 @@ export class Product {
 
   @Column()
   subCategory: string;
+
+  @Column()
+  merchantId: string;
 }
