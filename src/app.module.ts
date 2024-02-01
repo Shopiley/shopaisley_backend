@@ -17,6 +17,7 @@ import { Merchant } from './merchant/entities/merchant.entity';
 import { FilterModule } from './filter_search/filter_search.module';
 import { OrderModule } from './order/order.module';
 import {OrderDetails} from './order/entities/orderdetails.entity';
+import { OrderItems } from './order/entities/orderitem.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
@@ -32,7 +33,7 @@ require('dotenv').config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Product, ProductCategory, Merchant, OrderDetails],
+      entities: [User, Product, ProductCategory, Merchant, OrderDetails,OrderItems],
       synchronize: true,
       ssl: {
         rejectUnauthorized: false,

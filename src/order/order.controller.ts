@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { CreateOrderItemDto } from './dto/create-orderitem.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -25,6 +26,18 @@ export class OrderController {
   @ApiResponse({ status: 201, description: 'Order successfully created' })
   async create(@Body() createOrderDto: CreateOrderDto, @Res() response) {
     const data = await this.orderService.create(createOrderDto);
+    response.status(HttpStatus.CREATED).json({
+      status: 'success',
+      message: 'Order created successfully',
+      data: data,
+    });
+  }
+
+  @Patch()
+  @ApiOperation({ summary: 'Add a product to cart' })
+  @ApiResponse({ status: 201, description: 'Product successfully added to cart' })
+  async add_to_cart(@Body() createOrderItemDto: CreateOrderItemDto, @Res() response) {
+    const data = await this.orderService.add_to_cart(createOrderItemDto);
     response.status(HttpStatus.CREATED).json({
       status: 'success',
       message: 'Order created successfully',
