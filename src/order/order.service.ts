@@ -46,7 +46,12 @@ export class OrderService {
     updateOrderDto: UpdateOrderDto,
   ): Promise<OrderDetails> {
     const existingOrder = await this.findOne(id);
-    Object.assign(existingOrder, updateOrderDto);
+
+    // Only update the status property if it is present in the updateOrderDto
+    if (updateOrderDto.status) {
+      existingOrder.status = updateOrderDto.status;
+    }
+
     return this.orderdetailsRepository.save(existingOrder);
   }
 

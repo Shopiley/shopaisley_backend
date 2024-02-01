@@ -102,33 +102,32 @@ export class OrderController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update order by ID' })
-  @ApiResponse({ status: 200, description: 'Order successfully updated' })
+  @ApiOperation({ summary: 'Update order status by ID' })
+  @ApiResponse({ status: 200, description: 'Order status successfully updated' })
   @ApiResponse({ status: 404, description: 'Order not found' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
-  async update(
-    @Param('id') id: string,
-    @Body() updateOrderDto: UpdateOrderDto,
-    @Res() response,
-  ) {
+  async update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto, @Res() response) {
     try {
       const orderToDelete = await this.orderService.findOne(id);
 
       if (!orderToDelete) {
-        throw new NotFoundException(`Order with id: ${id} not found`);
+        throw new NotFoundException(`Order with id: ${id} not found`); 
       }
-
-      const orderedProduct = await this.orderService.update(id, updateOrderDto);
+      
+      const updatedOrder = await this.orderService.update(id, updateOrderDto);
 
       response.status(HttpStatus.OK).json({
         status: 'success',
-        message: 'Order updated successfully',
-        data: orderedProduct,
+        message: 'Order Status updated successfully',
+        data: updatedOrder,
       });
+      
     } catch (error) {
       response.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).json({
         message: error.message,
       });
+
     }
   }
 }
+
