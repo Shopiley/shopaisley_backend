@@ -1,4 +1,15 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, NotFoundException, Res} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  NotFoundException,
+  Res,
+} from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -15,9 +26,9 @@ export class OrderController {
   async create(@Body() createOrderDto: CreateOrderDto, @Res() response) {
     const data = await this.orderService.create(createOrderDto);
     response.status(HttpStatus.CREATED).json({
-    status: 'success',
-    message: 'Order created successfully',
-    data: data,
+      status: 'success',
+      message: 'Order created successfully',
+      data: data,
     });
   }
 
@@ -61,5 +72,35 @@ export class OrderController {
       });
     }
   }
-}
 
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update order by ID' })
+  @ApiResponse({ status: 200, description: 'Order successfully updated' })
+  @ApiResponse({ status: 404, description: 'Order not found' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  async update(
+    @Param('id') id: string,
+    @Body() updateOrderDto: UpdateOrderDto,
+    @Res() response,
+  ) {
+    try {
+      const orderToDelete = await this.orderService.findOne(id);
+
+      if (!orderToDelete) {
+        throw new NotFoundException(`Order with id: ${id} not found`);
+      }
+
+      const orderedProduct = await this.orderService.update(id, updateOrderDto);
+
+      response.status(HttpStatus.OK).json({
+        status: 'success',
+        message: 'Order updated successfully',
+        data: orderedProduct,
+      });
+    } catch (error) {
+      response.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: error.message,
+      });
+    }
+  }
+}
