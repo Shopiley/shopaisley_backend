@@ -86,19 +86,54 @@ export class OrderController {
     }
   }
 
+  @Get('user/:user_id') // Update the route to include userId as a parameter
+  @ApiOperation({ summary: 'Get orders by user ID' })
+  @ApiResponse({ status: 200, description: 'Orders successfully retrieved' })
+  @ApiResponse({ status: 404, description: 'Orders not found for the user' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  async findByUserId(@Param('user_id') user_id: string, @Res() response) {
+    try {
+      // Update the service method to retrieve orders by user ID
+      const orders = await this.orderService.findByUserId(user_id);
+
+      if (!orders) {
+        throw new NotFoundException(
+          `Orders not found for user with id: ${user_id}`,
+        );
+      }
+
+      response.status(HttpStatus.OK).json({
+        status: 'success',
+        message: 'Orders retrieved successfully',
+        data: orders,
+      });
+    } catch (error) {
+      response.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: error.message,
+      });
+    }
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Update order status by ID' })
-  @ApiResponse({ status: 200, description: 'Order status successfully updated' })
+  @ApiResponse({
+    status: 200,
+    description: 'Order status successfully updated',
+  })
   @ApiResponse({ status: 404, description: 'Order not found' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
-  async update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto, @Res() response) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateOrderDto: UpdateOrderDto,
+    @Res() response,
+  ) {
     try {
       const orderToDelete = await this.orderService.findOne(id);
 
       if (!orderToDelete) {
-        throw new NotFoundException(`Order with id: ${id} not found`); 
+        throw new NotFoundException(`Order with id: ${id} not found`);
       }
-      
+
       const updatedOrder = await this.orderService.update(id, updateOrderDto);
 
       response.status(HttpStatus.OK).json({
@@ -106,13 +141,10 @@ export class OrderController {
         message: 'Order Status updated successfully',
         data: updatedOrder,
       });
-      
     } catch (error) {
       response.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).json({
         message: error.message,
       });
-
     }
   }
 }
-

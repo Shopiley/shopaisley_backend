@@ -42,17 +42,28 @@ export class OrderService {
     return order;
   }
 
-  async update(id: string, updateOrderDto: UpdateOrderDto): Promise<OrderDetails> {
+  async findByUserId(user_id: string): Promise<OrderDetails | null> {
+    const options: FindOneOptions<OrderDetails> = {
+      where: { user_id },
+    };
+
+    const order = await this.orderdetailsRepository.findOne(options);
+    return order;
+  }
+
+  async update(
+    id: string,
+    updateOrderDto: UpdateOrderDto,
+  ): Promise<OrderDetails> {
     const existingOrder = await this.findOne(id);
-  
+
     // Only update the status property if it is present in the updateOrderDto
     if (updateOrderDto.status) {
       existingOrder.status = updateOrderDto.status;
     }
-  
+
     return this.orderdetailsRepository.save(existingOrder);
   }
-  
 
   remove(id: string) {
     return `This action removes a #${id} order`;
