@@ -1,4 +1,15 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, NotFoundException, Res} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  NotFoundException,
+  Res,
+} from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -15,9 +26,9 @@ export class OrderController {
   async create(@Body() createOrderDto: CreateOrderDto, @Res() response) {
     const data = await this.orderService.create(createOrderDto);
     response.status(HttpStatus.CREATED).json({
-    status: 'success',
-    message: 'Order created successfully',
-    data: data,
+      status: 'success',
+      message: 'Order created successfully',
+      data: data,
     });
   }
 

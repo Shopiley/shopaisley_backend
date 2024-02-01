@@ -3,18 +3,19 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { OrderDetails} from 'src/order/entities/orderdetails.entity';
+import { OrderDetails } from 'src/order/entities/orderdetails.entity';
 import { FindOneOptions } from 'typeorm';
 
 @Injectable()
 export class OrderService {
   constructor(
-    @InjectRepository(OrderDetails) 
+    @InjectRepository(OrderDetails)
     private readonly orderdetailsRepository: Repository<OrderDetails>,
-  ) { }
-  
+  ) {}
+
   async create(createOrderDto: CreateOrderDto): Promise<OrderDetails> {
-    const newOrder: OrderDetails = this.orderdetailsRepository.create(createOrderDto);
+    const newOrder: OrderDetails =
+      this.orderdetailsRepository.create(createOrderDto);
     return this.orderdetailsRepository.save(newOrder);
   }
 
