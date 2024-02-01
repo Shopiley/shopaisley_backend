@@ -13,6 +13,7 @@ import { Product } from './product/entities/product.entity';
 import { ProductCategory } from './product/entities/productcategory.entity';
 import { ShoppingModule } from './shopping/shopping.module';
 import { Auth } from './auth/entities/auth.entity';
+import { OrderModule } from './order/order.module';
 import { Merchant } from './merchant/entities/merchant.entity';
 import { FilterModule } from './filter_search/filter_search.module';
 import { OrderModule } from './order/order.module';
@@ -42,6 +43,7 @@ require('dotenv').config();
     UserModule,
     ProductModule,
     ShoppingModule,
+    OrderModule,
     MerchantModule,
     FilterModule,
     OrderModule,
