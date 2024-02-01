@@ -36,6 +36,16 @@ export class UpdateProductDto extends PartialType(CreateProductDto) {
 
   @ApiProperty()
   @IsOptional()
-  @IsNumber()
-  readonly categoryId?: number;
+  @IsString()
+  readonly category?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  readonly subCategory?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  readonly merchantId?: string;
 }
