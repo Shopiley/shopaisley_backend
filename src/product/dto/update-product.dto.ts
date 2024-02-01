@@ -35,14 +35,17 @@ export class UpdateProductDto extends PartialType(CreateProductDto) {
   readonly discountId?: number;
 
   @ApiProperty()
-  @IsNotEmpty()
-  readonly category: string;
+  @IsOptional()
+  @IsString()
+  readonly category?: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  readonly subCategory: string;
+  @IsOptional()
+  @IsString()
+  readonly subCategory?: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  readonly merchantId: string;
+  @IsOptional()
+  @IsString()
+  readonly merchantId?: string;
 }
