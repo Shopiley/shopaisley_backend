@@ -1,15 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Delete,
-  Res,
-  HttpStatus,
-  NotFoundException,
-  Post,
-  Body, 
-  Patch,
-} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, NotFoundException, Res} from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -53,7 +42,7 @@ export class OrderController {
   @ApiResponse({ status: 200, description: 'Order successfully retrieved' })
   @ApiResponse({ status: 404, description: 'Order not found' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
-  async findOne(@Param('id') id: number, @Res() response) {
+  async findOne(@Param('id') id: string, @Res() response) {
     try {
       const order = await this.orderService.findOne(id);
 

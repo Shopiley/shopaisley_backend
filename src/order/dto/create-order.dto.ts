@@ -6,6 +6,7 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsString()
   user_id: string;
+  
 
   @ApiProperty()
   @IsNotEmpty()
