@@ -3,7 +3,7 @@ import { CreateOrderDto } from './create-order.dto';
 import { IsString, IsNumber, IsOptional, IsIn } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 //export class UpdateOrderDto extends PartialType(CreateOrderDto) {
-export class UpdateOrderDto{
+export class UpdateOrderDto {
   @ApiProperty({
     description: 'Status of the order',
     enum: ['pending', 'processing', 'shipped', 'delivered'], // Define your options here
