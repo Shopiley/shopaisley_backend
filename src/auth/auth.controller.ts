@@ -34,6 +34,7 @@ export class AuthController {
   async logout(@Body() body: RefreshTokenDto){
     return this.authService.logout(body.refreshToken)
   }
+  
   @HttpCode(HttpStatus.OK)
   @Post('signin')
   signIn(@Body() body : LoginDto) {
