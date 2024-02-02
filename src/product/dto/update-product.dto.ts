@@ -22,11 +22,6 @@ export class UpdateProductDto extends PartialType(CreateProductDto) {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  readonly SKU?: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
   readonly ImageURL?: string;
 
   @ApiProperty()

@@ -22,10 +22,6 @@ export class CreateProductDto {
   @IsNumber()
   inventory_qty: number;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  SKU: string;
 
   @ApiProperty()
   @IsNotEmpty()
