@@ -7,6 +7,8 @@ import { Repository } from 'typeorm';
 import { OrderDetails } from 'src/order/entities/orderdetails.entity';
 import { OrderItems } from 'src/order/entities/orderitem.entity';
 import { FindOneOptions } from 'typeorm';
+import { ProductService } from 'src/product/product.service';
+import { CartItemDto } from './dto/populate-cart.dto';
 
 @Injectable()
 export class OrderService {
@@ -24,9 +26,21 @@ export class OrderService {
   }
 
   async add_to_cart(createOrderItemDto: CreateOrderItemDto): Promise<OrderItems> {
-    const newOrderItem: OrderItems =
-    this.orderitemsRepository.create(createOrderItemDto);
-    return this.orderitemsRepository.save(newOrderItem);
+    const newOrderItem: OrderItems = this.orderitemsRepository.create(createOrderItemDto);
+    const oldOrderItem = await this.orderitemsRepository.findOne({
+      where: {
+        product_id: newOrderItem.product_id,
+        order_id: newOrderItem.order_id,
+      },
+    });
+    if (oldOrderItem) {
+      oldOrderItem.quantity = newOrderItem.quantity;
+      return this.orderitemsRepository.save(oldOrderItem);
+    }
+    else{
+      return this.orderitemsRepository.save(newOrderItem);
+    }
+
   }
 
   async findAll() {
@@ -51,6 +65,8 @@ export class OrderService {
     return order;
   }
 
+  
+
   async update(id: string, updateOrderDto: UpdateOrderDto,): Promise<OrderDetails> {
     const existingOrder = await this.findOne(id);
 
@@ -59,10 +75,70 @@ export class OrderService {
       existingOrder.status = updateOrderDto.status;
     }
 
+    if (updateOrderDto.total) {
+      existingOrder.total += updateOrderDto.total;
+    }
+
     return this.orderdetailsRepository.save(existingOrder);
   }
 
   remove(id: string) {
     return `This action removes a #${id} order`;
+  }
+
+
+  async getCartItems(order_id: string): Promise<OrderItems[]> {
+    const options: FindOneOptions<OrderItems> = {
+      where: { order_id },
+    };
+
+    const order = await this.orderitemsRepository.find(options);
+    return order;
+  }
+
+  async checkIfCartExists(user_id: string): Promise<{ cart: OrderDetails | null, cartItems: OrderItems[] }> {
+    const options: FindOneOptions<OrderDetails> = {
+      where: { user_id, status: false },
+    };
+
+    let cart = await this.orderdetailsRepository.findOne(options);
+    if (!cart) {
+      // create cart
+      // createOrderDto: CreateOrderDto
+      const newCart = await this.create({ user_id, status: false });
+      cart = newCart;
+    }
+    const cartItems = await this.getCartItems(cart.id);
+    return { cart, cartItems };
+  }
+
+  async populateCartItems(order_id: string, cart: CartItemDto[]): Promise<OrderItems[]> {
+    let total = 0;
+    for (let i = 0; i < cart.length; i++) {
+      const product = cart[i];
+      const product_id = product.product_id;
+      const quantity = product.quantity;
+      const price = product.price;
+      total += price * quantity;
+      await this.add_to_cart({
+        order_id: order_id,
+        product_id: product_id,
+        price: price,
+        quantity: quantity,
+      });
+    }
+    await this.update(order_id, { total: total });
+    return await this.getCartItems(order_id);
+      // await this.orderdetailsRepository.findOne({ where: { id: order_id } })
+  }
+
+
+  async getCartTotal(order_id: string): Promise<number> {
+    const cart = await this.getCartItems(order_id);
+    let total = 0;
+    for (let i = 0; i < cart.length; i++) {
+      total += cart[i].quantity * cart[i].price;
+    }
+    return total;
   }
 }
