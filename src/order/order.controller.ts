@@ -15,11 +15,12 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { CreateOrderItemDto } from './dto/create-orderitem.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ProductService } from 'src/product/product.service';
 
 @ApiTags('order')
 @Controller('order')
 export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService, private readonly productService: ProductService,) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new order' })
@@ -37,11 +38,21 @@ export class OrderController {
   @ApiOperation({ summary: 'Add a product to cart' })
   @ApiResponse({ status: 201, description: 'Product successfully added to cart' })
   async add_to_cart(@Body() createOrderItemDto: CreateOrderItemDto, @Res() response) {
+    const product = await this.productService.findOne(createOrderItemDto.product_id);
     const data = await this.orderService.add_to_cart(createOrderItemDto);
+    const cartResponseDto = {
+      order_item_id: data.order_id,
+      order_id: data.order_id,
+      product_id: data.product_id,
+      quantity: data.quantity,
+      product_name: product.name,
+      unit_price: product.unitPrice,
+      image_url: product.ImageURL
+    }
     response.status(HttpStatus.CREATED).json({
       status: 'success',
       message: 'Order created successfully',
-      data: data,
+      data: cartResponseDto,
     });
   }
 
@@ -69,15 +80,27 @@ export class OrderController {
   async findOne(@Param('id') id: string, @Res() response) {
     try {
       const order = await this.orderService.findOne(id);
+      const orderItems = await this.orderService.getCartItems(id);
 
       if (!order) {
         throw new NotFoundException(`Order with id: ${id} not found`); // Use a suitable error type
       }
 
+      const responsePayload = {
+        id: order.id,
+        user_id: order.user_id,
+        payment_id: order.payment_id,
+        total: order.total,
+        status: order.status,
+        CreatedAt: order.CreatedAt,
+        ModifiedAt: order.ModifiedAt,
+        order_items: orderItems
+      }
+
       response.status(HttpStatus.OK).json({
         status: 'success',
         message: 'Order retrieved successfully',
-        data: order,
+        data: responsePayload
       });
     } catch (error) {
       response.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).json({
