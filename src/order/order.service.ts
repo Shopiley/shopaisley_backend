@@ -51,10 +51,7 @@ export class OrderService {
     return order;
   }
 
-  async update(
-    id: string,
-    updateOrderDto: UpdateOrderDto,
-  ): Promise<OrderDetails> {
+  async update(id: string, updateOrderDto: UpdateOrderDto,): Promise<OrderDetails> {
     const existingOrder = await this.findOne(id);
 
     // Only update the status property if it is present in the updateOrderDto
