@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
+import { Merchant } from 'src/merchant/entities/merchant.entity';
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, ManyToOne, JoinColumn} from 'typeorm';
 
 @Entity()
 export class Product {
@@ -39,8 +40,9 @@ export class Product {
   @Column()
   subCategory: string;
 
-  @Column()
-  merchantId: string;
+  @ManyToOne(() => Merchant, merchant => merchant.products)
+  @JoinColumn({ name: 'merchantId' })
+  merchant: Merchant;
 
   // Constructor to initialize entity fields and generate SKU
   constructor(product?: Partial<Product>) {
