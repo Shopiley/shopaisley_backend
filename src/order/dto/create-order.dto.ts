@@ -6,17 +6,16 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsString()
   user_id: string;
-  
 
-  @ApiProperty()
+  @ApiProperty({ default: 'default_payment_id' })
   @IsNotEmpty()
   @IsString()
-  payment_id: string;
+  payment_id?: string = 'default_payment_id';
 
-  @ApiProperty()
+  @ApiProperty({ default: 0 })
   @IsNotEmpty()
   @IsNumber()
-  total: number;
+  total?: number = 0;
 
   @ApiProperty({ default: false})
   @IsNotEmpty()
