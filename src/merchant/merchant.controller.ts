@@ -17,11 +17,19 @@ import { MerchantService } from './merchant.service';
 import { CreateMerchantDto } from './dto/create-merchant.dto';
 import { UpdateMerchantDto } from './dto/update-merchant.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Merchant } from './entities/merchant.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, In } from 'typeorm';
 
 @ApiTags('merchant')
 @Controller('merchant')
 export class MerchantController {
-  constructor(private readonly merchantService: MerchantService) {}
+  // rest of the code...
+  constructor(
+    private readonly merchantService: MerchantService,
+    @InjectRepository(Merchant)
+    private merchantRepository: Repository<Merchant>,
+  ) {}
 
   // @Version('1')
   @Post('create')
@@ -52,6 +60,37 @@ export class MerchantController {
     
   }
 */
+
+@Post()
+@ApiOperation({ summary: 'Get buisness names' })
+async findMerchantName(@Body() merchantIds: string[], @Res() response: Response): Promise<Response> {
+  const bussinessNames = [];
+    const merchants = await this.merchantRepository.find({
+      where: {
+        id: In(merchantIds),
+      },
+    });
+
+    merchants.forEach((merchant) => {
+      if (!merchant) {
+        bussinessNames.push(null);
+      } else {
+        bussinessNames.push(merchant.BusinessName);
+      }
+    })
+
+
+  return response.status(HttpStatus.OK).json({
+    status: 'success',
+    message: 'Merchant Found',
+    data: bussinessNames,
+  });
+}
+
+
+
+
+
 @Get(':id')
 async findOne(@Param('id') id: string, @Res() response: Response) {
   try {
