@@ -10,9 +10,6 @@ export class OrderDetails{
   user_id: string;
 
   @Column()
-  payment_id: string;
-
-  @Column()
   total: number;
 
   @Column()

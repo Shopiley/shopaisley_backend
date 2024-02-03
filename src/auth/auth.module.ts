@@ -9,9 +9,9 @@ import { jwtConstants } from './constants';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Auth]), UserModule, JwtModule.register({
-    global:true,
-    secret: jwtConstants.secret,
-    signOptions:{expiresIn: '6h'}
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '6h' },
   })],
   controllers: [AuthController],
   providers: [AuthService],
