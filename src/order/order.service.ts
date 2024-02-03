@@ -8,7 +8,7 @@ import { OrderDetails } from 'src/order/entities/orderdetails.entity';
 import { OrderItems } from 'src/order/entities/orderitem.entity';
 import { FindOneOptions } from 'typeorm';
 import { ProductService } from 'src/product/product.service';
-import { CartItemDto } from './dto/populate-cart.dto';
+import { CartDto, CartItemDto } from './dto/populate-cart.dto';
 
 @Injectable()
 export class OrderService {
@@ -38,7 +38,10 @@ export class OrderService {
       return this.orderitemsRepository.save(oldOrderItem);
     }
     else{
-      return this.orderitemsRepository.save(newOrderItem);
+      const savedNewOrderItem =  this.orderitemsRepository.save(newOrderItem);
+      const total = newOrderItem.quantity * newOrderItem.price;
+      await this.update(newOrderItem.order_id, { total: total });
+      return savedNewOrderItem;
     }
 
   }
@@ -96,20 +99,19 @@ export class OrderService {
     return order;
   }
 
-  async checkIfCartExists(user_id: string): Promise<{ cart: OrderDetails | null, cartItems: OrderItems[] }> {
+  async checkIfCartExists(user_id: string): Promise<OrderDetails | null> {
+    //checks if an open cart exists for the user, otherwise creates a new one
     const options: FindOneOptions<OrderDetails> = {
       where: { user_id, status: false },
     };
 
     let cart = await this.orderdetailsRepository.findOne(options);
     if (!cart) {
-      // create cart
-      // createOrderDto: CreateOrderDto
-      const newCart = await this.create({ user_id, status: false });
+      const newCart = await this.create({ user_id, status: false, total: 0});
       cart = newCart;
     }
-    const cartItems = await this.getCartItems(cart.id);
-    return { cart, cartItems };
+    // const cartItems = await this.getCartItems(cart.id);
+    return cart; 
   }
 
   async populateCartItems(order_id: string, cart: CartItemDto[]): Promise<OrderItems[]> {
