@@ -5,28 +5,24 @@ import {
   IsNumber,
   IsArray,
   IsObject,
+  IsOptional,
 } from 'class-validator';
 
 export class CartItemDto {
   @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
   product_id: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
   price: number;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
   quantity: number;
 }
 
 export class CartDto {
-  @ApiProperty({ type: [CartItemDto] })
+  @IsOptional()
   @IsArray()
   @IsObject({ each: true })
+  @ApiProperty({ type: [CartItemDto], required: false })
   cart: CartItemDto[];
 }
