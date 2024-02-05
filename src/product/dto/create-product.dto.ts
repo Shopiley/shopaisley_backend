@@ -19,24 +19,14 @@ export class CreateProductDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  SKU: string;
+  @IsNumber()
+  inventory_qty: number;
+
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
   ImageURL: string;
-
-  // not needed, it populates itself automatically, check entity
-  // @ApiProperty()
-  // @IsNotEmpty()
-  // @IsDate()
-  // readonly CreatedAt: Date;
-
-  // @ApiProperty()
-  // @IsNotEmpty()
-  // @IsDate()
-  // readonly ModifiedAt: Date;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -45,8 +35,15 @@ export class CreateProductDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsNumber()
-  categoryId: number;
+  category: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  subCategory: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  merchantId: string;
 }
 
 export class CreateProductDtoResponse extends CreateProductDto {

@@ -12,6 +12,7 @@ async function bootstrap() {
     .setTitle(process.env.APP_NAME)
     .setDescription(process.env.APP_DESCRIPTION)
     .setVersion(process.env.API_VERSION)
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig, {
     ignoreGlobalPrefix: false,

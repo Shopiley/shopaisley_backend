@@ -73,6 +73,63 @@ export class ProductController {
 
 
   // @Version('1')
+  @Get('subcategory/:subCategory')
+  @ApiOperation({ summary: 'Get product by Sub Category' })
+  @ApiResponse({ status: 200, description: 'Products successfully retrieved' })
+  @ApiResponse({ status: 404, description: 'Product not found' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  async findBySubCategory(@Param('subCategory') subCategory: string, @Res() response) {
+    try {
+      const product = await this.productService.findProductBySubCategory(subCategory);
+      if (!product) {
+        throw new NotFoundException(`Products in sub-category: ${subCategory} not found`); 
+      }
+
+      response.status(HttpStatus.OK).json({
+        status: 'success',
+        message: 'Products retrieved successfully',
+        data: product,
+      });
+      
+    } catch (error) {
+      response.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: error.message,
+      });
+
+    }
+  }
+
+
+  // @Version('1')
+  @Get('category/:category')
+  @ApiOperation({ summary: 'Get product by Category' })
+  @ApiResponse({ status: 200, description: 'Products successfully retrieved' })
+  @ApiResponse({ status: 404, description: 'Product not found' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  async findByCategory(@Param('category') category: string, @Res() response) {
+    try {
+      const product = await this.productService.findProductByCategory(category);
+
+      if (!product) {
+        throw new NotFoundException(`Products in category: ${category} not found`); 
+      }
+
+      response.status(HttpStatus.OK).json({
+        status: 'success',
+        message: 'Products retrieved successfully',
+        data: product,
+      });
+      
+    } catch (error) {
+      response.status(error.status || HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: error.message,
+      });
+
+    }
+  }
+
+
+  // @Version('1')
   @Patch(':id')
   @ApiOperation({ summary: 'Update product by ID' })
   @ApiResponse({ status: 200, description: 'Product successfully updated' })
