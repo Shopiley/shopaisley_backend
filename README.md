@@ -36,7 +36,11 @@ Start the server
 
 Access the Application:
 
-   Open your web browser and navigate to `http://localhost:3000` or the URL specified in your application.
+   Open your web browser and navigate to `http://localhost:3000/v1/docs` or the URL specified in your application.
+
+
+## API Documention and UI
+https://shopaisley-backend.onrender.com/v1/docs
 
 
 ## API Documention and UI
